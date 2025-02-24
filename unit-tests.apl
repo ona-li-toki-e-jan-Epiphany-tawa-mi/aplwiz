@@ -22,6 +22,10 @@
 ⍝ - paltepuk (Tor) - http://4blcq4arxhbkc77tfrtmy4pptf55gjbhlj32rbfyskl672v2plsmjcyd.onion/cgit/aplwiz.git/about/
 ⍝ - GitHub - https://github.com/ona-li-toki-e-jan-Epiphany-tawa-mi/aplwiz/
 
+⍝ Data types:
+⍝ - string - a character vector.
+⍝ - boolean - a scalar 0, for false, or a 1, for true.
+
 ⍝ aplwiz GNU APL unit testing script template.
 ⍝ See the TODOs for how to use.
 
@@ -30,13 +34,18 @@
 ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
 
 ⍝ The number of tests called with RUN.
+⍝ Type: scalar whole number.
 test_count←0
 ⍝ Whether the current test with RUN failed.
+⍝ Type: scalar whole number.
 test_failed←0
 ⍝ The section name to display for failed assertions. ⍬ means no section.
+⍝ Type: scalar whole number.
 section_name←⍬
 ⍝ Counters.
+⍝ Type: scalar whole number.
 assertion_number←0
+⍝ Type: scalar whole number.
 failed_tests←⍬
 
 ⍝ Runs the given test. Must be used to call functions with SECTION and ASSERT.
