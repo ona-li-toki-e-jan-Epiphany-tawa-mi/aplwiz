@@ -30,81 +30,82 @@
 ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
 
 ⍝ The number of tests called with RUN.
-TEST_COUNT←0
+test_count←0
 ⍝ Whether the current test with RUN failed.
-TEST_FAILED←0
+test_failed←0
 ⍝ The section name to display for failed assertions. ⍬ means no section.
-SECTION_NAME←⍬
-⍝ Counter.
-ASSERTION_NUMBER←0
-FAILED_TESTS←⍬
+section_name←⍬
+⍝ Counters.
+assertion_number←0
+failed_tests←⍬
 
 ⍝ Runs the given test. Must be used to call functions with SECTION and ASSERT.
-⍝ TEST: string - the test function to run.
-∇RUN TEST; RESULT
-  TEST_COUNT←1+TEST_COUNT
+⍝ →test: string - the test function to run.
+∇RUN test; result
+  test_count←1+test_count
 
-  TEST_FAILED←0
-  SECTION_NAME←⍬
-  ASSERTION_NUMBER←0
-  ⍞←"Runnning test '" ◊ ⍞←TEST ◊ ⍞←"'... "
-  ⍎TEST
+  test_failed←0
+  section_name←⍬
+  assertion_number←0
+  ⍞←"Runnning test '" ◊ ⍞←test ◊ ⍞←"'... "
+  ⍎test
 
-  →TEST_FAILED ⍴ LFAILED
-    ⍞←"OK\n" ◊ →LNOT_FAILED
-  LFAILED:
+  →test_failed ⍴ lfailed
+    ⍞←"OK\n" ◊ →lnot_failed
+  lfailed:
     ⍞←"FAIL\n"
-    →(0≢≢SECTION_NAME) ⍴ LHAS_SECTION_NAME
-      FAILED_TESTS←FAILED_TESTS,⊂TEST," assertion",ASSERTION_NUMBER
-      →LNO_SECTION_NAME
-    LHAS_SECTION_NAME:
-      FAILED_TESTS←FAILED_TESTS,⊂TEST," section '",SECTION_NAME,"' assertion",ASSERTION_NUMBER
-    LNO_SECTION_NAME:
-  LNOT_FAILED:
+    →(0≢≢section_name) ⍴ lhas_section_name
+      failed_tests←failed_tests,⊂test," assertion",assertion_number
+      →lno_section_name
+    lhas_section_name:
+      failed_tests←failed_tests,⊂test," section '",section_name,"' assertion",assertion_number
+    lno_section_name:
+  lnot_failed:
 ∇
 
-⍝ Sets the current section name, which is displayed when assertions faile.
-⍝ NAME: string.
-∇SECTION NAME
-  SECTION_NAME←NAME
-  ASSERTION_NUMBER←0
+⍝ Sets the current section name, which is displayed when assertions fail.
+⍝ →name: string.
+∇SECTION name
+  section_name←name
+  assertion_number←0
 ∇
 
-⍝ Asserts that RESULT is true.
-⍝ RESULT: boolean.
-⍝ FAILED: boolean - opposite of RESULT.
-∇FAILED←ASSERT RESULT
-  →(0≡RESULT) ⍴ LVALID ◊ →(1≡RESULT) ⍴ LVALID
+⍝ Asserts that result is true.
+⍝ →result: boolean.
+⍝ ←failed: boolean - opposite of result.
+∇failed←ASSERT result
+  →(0≡result) ⍴ lvalid ◊ →(1≡result) ⍴ lvalid
     ⍞←"\nASSERT: encounted unexpected result value. Expected a scalar 0 or 1, got"
-    ⍞←": '" ◊ ⍞←RESULT ◊ ⍞←"'\n"
+    ⍞←": '" ◊ ⍞←result ◊ ⍞←"'\n"
     ⍎")OFF 1"
-  LVALID:
+  lvalid:
 
-  ASSERTION_NUMBER←1+ASSERTION_NUMBER
+  assertion_number←1+assertion_number
 
-  →TEST_FAILED ⍴ LALREADY_FAILED
-  TEST_FAILED←~RESULT
-LALREADY_FAILED:
-  FAILED←TEST_FAILED
+  →test_failed ⍴ lalready_failed
+  test_failed←~result
+lalready_failed:
+  failed←test_failed
 ∇
 
-⍝ Macro for asserting a value in RESULT.
-ASSERT_R←"→(ASSERT RESULT) ⍴ LFAIL"
+⍝ Macro for asserting a value in result.
+⍝ Type: string.
+massert←"→(ASSERT result) ⍴ lfail"
 
 ⍝ Prints out the final report for the tests.
-∇REPORT; TESTS_PASSED
-  TESTS_PASSED←TEST_COUNT-≢FAILED_TESTS
-  ⍞←TESTS_PASSED ◊ ⍞←"/" ◊ ⍞←TEST_COUNT ◊ ⍞←" test(s) passed - "
-  →(0≢≢FAILED_TESTS) ⍴ LTESTS_FAILED
-    ⍞←"OK\n" ◊ →LTESTS_PASSED
-  LTESTS_FAILED:
+∇REPORT; tests_passed
+  tests_passed←test_count-≢failed_tests
+  ⍞←tests_passed ◊ ⍞←"/" ◊ ⍞←test_count ◊ ⍞←" test(s) passed - "
+  →(0≢≢failed_tests) ⍴ ltests_failed
+    ⍞←"OK\n" ◊ →ltests_passed
+  ltests_failed:
     ⍞←"FAIL\n"
     ⍞←"\nPlease review the following failed tests:\n"
-    REPORT_TEST_FAILED¨ FAILED_TESTS
-  LTESTS_PASSED:
+    REPORT_TEST_FAILED¨ failed_tests
+  ltests_passed:
 ∇
-∇REPORT_TEST_FAILED TEST_NAME
-  ⍞←" - " ◊ ⍞←TEST_NAME ◊ ⍞←"\n"
+∇REPORT_TEST_FAILED test_name
+  ⍞←" - " ◊ ⍞←test_name ◊ ⍞←"\n"
 ∇
 
 ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
@@ -112,16 +113,16 @@ ASSERT_R←"→(ASSERT RESULT) ⍴ LFAIL"
 ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
 
 ⍝ TODO create your own tests.
-∇TEST_EXAMPLE; RESULT
+∇TEST_EXAMPLE; result
   SECTION "Passing tests"
-  RESULT←1≡1                            ◊ ⍎ASSERT_R
-  RESULT←1 2 3≡⍳3                       ◊ ⍎ASSERT_R
-  RESULT←"hello world"≡"hello ","world" ◊ ⍎ASSERT_R
+  result←1≡1                            ◊ ⍎massert
+  result←1 2 3≡⍳3                       ◊ ⍎massert
+  result←"hello world"≡"hello ","world" ◊ ⍎massert
 
   SECTION "Failing test"
-  RESULT←1≡0 ◊ ⍎ASSERT_R
+  result←1≡0 ◊ ⍎massert
 
-LFAIL:
+lfail:
 ∇
 
 ⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝⍝
@@ -136,9 +137,9 @@ LFAIL:
   RUN "TEST_EXAMPLE"
   ⍞←"\n" ◊ REPORT
 
-  →(0≡≢FAILED_TESTS) ⍴ LSUCCESS
+  →(0≡≢failed_tests) ⍴ lsuccess
     ⍎")OFF 1"
-  LSUCCESS:
+  lsuccess:
 ∇
 MAIN
 
