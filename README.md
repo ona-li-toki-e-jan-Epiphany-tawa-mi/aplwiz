@@ -1,26 +1,25 @@
-# aplwiz
+# units
 
-Depedencies:
+This project contains a collection of unit testing templates I've written to
+quickly add unit testing to your projects.
 
-- GNU APL: ([https://www.gnu.org/software/apl](https://www.gnu.org/software/apl))
-
-There is a `flake.nix` you can use with `nix develop` to generate a development
-enviroment.
-
-This project contains a collection of testing script templates, written in GNU
-APL, that can be included in your GNU APL projects to add automated testing
-(i.e. unit testing, integration testing.)
+Currently, there only exists a for GNU APL projects, but I will add scripts for
+more languages as I come to need them.
 
 The scripts *are* templates, so they will require modification to work with your
 project. Check the files for instructions.
 
-## unit-tests.apl
+## unit.apl
 
-Unit testing script. No dependencies.
+For GNU APL
+[https://www.gnu.org/software/apl](https://www.gnu.org/software/apl)
+projects.
+
+No extra dependencies.
 
 To run the example tests, run one of the following commands:
 
 ```sh
-apl --script unit-tests.apl
-./unit-tests.apl
+apl --script units.apl
+./units.apl
 ```
